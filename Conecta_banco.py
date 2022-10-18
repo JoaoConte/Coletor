@@ -37,18 +37,11 @@ class Conexao():
                                         self.serv_conex1 = self.le_valida[15:]
                                         self.service = self.serv_conex1.strip('\n')
                                         #print(self.service)
-
-
-
-
-
-
-
         except OSError:
             messagebox.showerror('Falha na conexão com o Banco de dados', 'arquivo CONEXÃO.DAT não encontrado!\n'
-                                                                          'Verifique se o programa executavel do\n'
-                                                                          'validador esta na pasta do sistema\n '
-                                                                          'ou se os dados informados estão corretos')
+                                                                          'Verifique se o programa executável está na\n'
+                                                                          'pasta do sistema ou se os dados informados\n '
+                                                                          'estão corretos')
     def conecta_DB(self):
         if self.bancodados != 'SQLSERVER':
             try:
@@ -75,10 +68,10 @@ class Conexao():
         else:
             self.cbd_sql.close()
 
-    def conecta_voa(self):
+    def conecta_col(self):
         caminho = os.path.abspath(os.path.dirname('.'))
-        self.banco_voa = sqlite3.connect(caminho+"\VAL_SCRIPT.db")
-        self.cursor_voa = self.banco_voa.cursor()
+        self.banco_col = sqlite3.connect(caminho+"\Coletor_DB.db")
+        self.cursor_col = self.banco_col.cursor()
 
-    def desconecta_voa(self):
-        self.banco_voa.close()
+    def desconecta_col(self):
+        self.banco_col.close()

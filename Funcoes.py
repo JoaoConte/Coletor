@@ -2,15 +2,18 @@ from Modulos import *
 
 class Funcs():
     def botoes_cadastros(self):
-        self.btn_consultor = Button(self.cadastro, text='Consultores', bg = '#D3D3D3', font=('verdana', 10,'bold'), height = 2, width = 15)
+        self.btn_consultor = Button(self.cadastro, text='Consultores', bg = '#D3D3D3', font=('verdana', 10,'bold'), height = 2, width = 15, command=self.entry_consultor)
         self.btn_consultor.place(relx = 0.15, rely = 0.1)
         self.btn_pecas = Button(self.cadastro, text='Peças', bg = '#D3D3D3', font=('verdana', 10,'bold'), height = 2, width = 15)
         self.btn_pecas.place(relx = 0.4, rely = 0.1)
         self.btn_servicos = Button(self.cadastro, text='Serviços', bg = '#D3D3D3', font=('verdana', 10,'bold'), height = 2, width = 15)
         self.btn_servicos.place(relx = 0.65, rely = 0.1)
 
-        self.frame_selecao = Frame(self.cadastro, height=400, width=700, background='blue')
-        self.frame_selecao.pack(side = BOTTOM)
+        self.frame_grid = Frame(self.cadastro, height=300, width=700, background='red')
+        self.frame_grid.pack(side = BOTTOM)
+        self.frame_dados = Frame(self.cadastro, height=150, width=700)
+        self.frame_dados.pack(side = BOTTOM)
+
 
     def abas(self):
         self.tab_control = ttk.Notebook(self.telaval)             # Estanciando o controle de abas
@@ -23,20 +26,20 @@ class Funcs():
         self.tab_control.pack(expand=1, fill='both') 
 
     def dataini(self): # Carrega Data inicial
-        self.lbl_cal = Label(self.filtro, text = 'Data inicial', font = ('verdana', 8, 'bold'))
-        self.lbl_cal.place(relx = 0.25, rely = 0.42)
-        self.ent_cal = DateEntry(self.filtro, locale='pt_br')
-        self.data_ini = self.ent_cal.get()
-        self.ent_cal.delete(0,END)
-        self.ent_cal.place(relx=0.25, rely=0.45)
+        self.lbl_ini = Label(self.filtro, text = 'Data inicial', font = ('verdana', 8, 'bold'))
+        self.lbl_ini.place(relx = 0.25, rely = 0.42)
+        self.ent_ini = DateEntry(self.filtro, locale='pt_br')
+        self.data_ini = self.ent_ini.get()
+        self.ent_ini.delete(0,END)
+        self.ent_ini.place(relx=0.25, rely=0.45)
 
     def datafim(self): # Carrega Data final
-        self.lbl_cal = Label(self.filtro, text = 'Data final', font = ('verdana', 8, 'bold'))
-        self.lbl_cal.place(relx = 0.60, rely = 0.42)
-        self.ent_cal = DateEntry(self.filtro, locale='pt_br')
-        self.data_fim = self.ent_cal.get()
-        self.ent_cal.delete(0,END)
-        self.ent_cal.place(relx=0.60, rely=0.45)        
+        self.lbl_fim = Label(self.filtro, text = 'Data final', font = ('verdana', 8, 'bold'))
+        self.lbl_fim.place(relx = 0.60, rely = 0.42)
+        self.ent_fim = DateEntry(self.filtro, locale='pt_br')
+        self.data_fim = self.ent_fim.get()
+        self.ent_fim.delete(0,END)
+        self.ent_fim.place(relx=0.60, rely=0.45)        
 
     def seleciona_revenda(self):
         try:

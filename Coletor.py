@@ -1,12 +1,15 @@
 from Modulos import *
 from Funcoes import *
 from Conecta_banco import *
-from Adicionais import *
+from Prepara_dados import *
 from Telas import *
+from Consultores import *
+from Pecas import *
+from Servicos import *
 
 telaval = Tk() # Estanciando a intergace grafica
 
-class Application(Funcs, Conexao, Adict, Tela): # Declarando uso das classes
+class Application(Funcs, Conexao, Pre_Dados, Tela, Consultor, Peca, Servico): # Declarando uso das classes
 # Inicialização em tempo de carga
     def __init__(self):
         self.telaval = telaval  # Estância tela inicial
