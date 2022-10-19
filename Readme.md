@@ -1,0 +1,3 @@
+Sistema criado para exercitar Python com Tkinter, leitura em bancos SQL Server e Oracle e gravação em SQLite3. possibilidade de exportação do resultado em excel.
+O intuito é reproduzir uma planilha que peguei como exemplo onde são apuradas as vendas de peças e mao de obra com empresa/vendedor/produtos e serviços.
+Banco de dados criado em Sqlite 3 com 6 tabelas tendo o conteudo das vendas em 3 tabelas e a mais 3 tabelas com parametros para geração, sendo vendedores, produtos e serviços. 

@@ -1,15 +1,32 @@
 from Modulos import *
 
 class Funcs():
+    def limpa_frame(self):
+        try:
+            self.lbl_titulo.destroy()
+            self.lbl_empresa.destroy()
+            self.ent_empresa.destroy()
+            self.lbl_revenda.destroy()
+            self.ent_revenda.destroy()
+            self.lbl_codigo.destroy()
+            self.ent_codigo.destroy()
+            self.lbl_nome.destroy()
+            self.ent_nome.destroy()
+            self.btn_grava_c.destroy()
+            self.btn_altera_c.destroy()
+            self.btn_exclui_c.destroy()
+        except:
+            pass
+        
     def botoes_cadastros(self):
         self.btn_consultor = Button(self.cadastro, text='Consultores', bg = '#D3D3D3', font=('verdana', 10,'bold'), height = 2, width = 15, command=self.entry_consultor)
         self.btn_consultor.place(relx = 0.15, rely = 0.1)
-        self.btn_pecas = Button(self.cadastro, text='Peças', bg = '#D3D3D3', font=('verdana', 10,'bold'), height = 2, width = 15)
+        self.btn_pecas = Button(self.cadastro, text='Peças', bg = '#D3D3D3', font=('verdana', 10,'bold'), height = 2, width = 15, command=self.limpa_frame)
         self.btn_pecas.place(relx = 0.4, rely = 0.1)
         self.btn_servicos = Button(self.cadastro, text='Serviços', bg = '#D3D3D3', font=('verdana', 10,'bold'), height = 2, width = 15)
         self.btn_servicos.place(relx = 0.65, rely = 0.1)
 
-        self.frame_grid = Frame(self.cadastro, height=300, width=700, background='red')
+        self.frame_grid = Frame(self.cadastro, height=300, width=700)
         self.frame_grid.pack(side = BOTTOM)
         self.frame_dados = Frame(self.cadastro, height=150, width=700)
         self.frame_dados.pack(side = BOTTOM)
