@@ -1,6 +1,7 @@
 from Modulos import *
 
 class Funcs():
+
     def limpa_frame(self):
         try:
             self.lbl_titulo.destroy()
@@ -15,15 +16,21 @@ class Funcs():
             self.btn_grava_c.destroy()
             self.btn_altera_c.destroy()
             self.btn_exclui_c.destroy()
+            self.lista_con.destroy()
+            self.lista_pec.destroy()
+            self.lista_ser.destroy()
+            self.scr_lista_con.destroy()
+            self.scr_lista_pec.destroy()
+            self.scr_lista_ser.destroy()
         except:
             pass
         
     def botoes_cadastros(self):
         self.btn_consultor = Button(self.cadastro, text='Consultores', bg = '#D3D3D3', font=('verdana', 10,'bold'), height = 2, width = 15, command=self.entry_consultor)
         self.btn_consultor.place(relx = 0.15, rely = 0.1)
-        self.btn_pecas = Button(self.cadastro, text='Peças', bg = '#D3D3D3', font=('verdana', 10,'bold'), height = 2, width = 15, command=self.limpa_frame)
+        self.btn_pecas = Button(self.cadastro, text='Peças', bg = '#D3D3D3', font=('verdana', 10,'bold'), height = 2, width = 15, command=self.entry_pecas)
         self.btn_pecas.place(relx = 0.4, rely = 0.1)
-        self.btn_servicos = Button(self.cadastro, text='Serviços', bg = '#D3D3D3', font=('verdana', 10,'bold'), height = 2, width = 15)
+        self.btn_servicos = Button(self.cadastro, text='Serviços', bg = '#D3D3D3', font=('verdana', 10,'bold'), height = 2, width = 15, command=self.entry_servicos)
         self.btn_servicos.place(relx = 0.65, rely = 0.1)
 
         self.frame_grid = Frame(self.cadastro, height=300, width=700)
@@ -83,8 +90,8 @@ class Funcs():
         self.leitura_banco()   #### Validacao.py
         
     def frame_revenda(self):
-        self.lbl_titulo = Label(self.filtro, text = 'Extrator de dados para comissão', font=('verdana', 18, 'bold'))
-        self.lbl_titulo.place(relx = 0.18, rely=0.05)
+        self.lbl_titulop = Label(self.filtro, text = 'Extrator de dados para comissão', font=('verdana', 18, 'bold'))
+        self.lbl_titulop.place(relx = 0.18, rely=0.05)
         self.lbl_emprev = Label(self.filtro, text = 'Empresa/Revenda', font=('verdana', 8, 'bold'))
         self.lbl_emprev.place(relx = 0.23, rely=0.14)
         self.conecta_DB()

@@ -1,12 +1,34 @@
-from platform import release
 from Modulos import *
 
 class Consultor():
+
     def var_consultor(self):
+        self.erro = 0
         self.empresa = self.ent_empresa.get()
+        if self.empresa == '' or self.empresa == ' ':
+            messagebox.showerror('Empresa','Campo empresa não pode ser vazio')
+            self.erro = 1
+            self.ent_empresa.focus()
+            return
         self.revenda = self.ent_revenda.get()
+        if self.revenda == '' or self.revenda == ' ':
+            messagebox.showerror('Revenda','Campo Revenda não pode ser vazio')
+            self.erro = 1
+            self.ent_revenda.focus()
+            return
         self.codigo = self.ent_codigo.get()
+        if self.codigo == '' or self.codigo == ' ':
+            messagebox.showerror('Código','Campo Código não pode ser vazio')
+            self.erro = 1
+            self.ent_codigo.focus()
+            return
         self.nome = self.ent_nome.get()
+        self.nome = self.nome.upper()
+        if self.nome == '' or self.nome == ' ':
+            messagebox.showerror('Nome','Campo Nome não pode ser vazio')
+            self.erro = 1
+            self.ent_nome.focus()
+            return        
 
     def limpa_consultor(self):
         self.ent_empresa.delete(0,END)
@@ -47,6 +69,8 @@ class Consultor():
 
     def grava_consultor(self):
         self.var_consultor()
+        if self.erro == 1:
+            return
         self.conecta_col()
         self.cursor_col.execute("insert into consultores(empresa, revenda, cod_usuario, nome_usuario) values (?, ?, ?, ?)",(self.empresa, self.revenda, self.codigo, self.nome))
         self.banco_col.commit()
