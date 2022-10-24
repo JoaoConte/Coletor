@@ -2,7 +2,7 @@ from Modulos import *
 
 class Funcs():
 
-    def limpa_frame(self):
+    def limpa_frame(self):  # Frame de cadastros
         try:
             self.lbl_titulo.destroy()
             self.lbl_empresa.destroy()
@@ -53,7 +53,6 @@ class Funcs():
         self.lbl_ini = Label(self.filtro, text = 'Data inicial', font = ('verdana', 8, 'bold'))
         self.lbl_ini.place(relx = 0.25, rely = 0.42)
         self.ent_ini = DateEntry(self.filtro, locale='pt_br')
-        self.data_ini = self.ent_ini.get()
         self.ent_ini.delete(0,END)
         self.ent_ini.place(relx=0.25, rely=0.45)
 
@@ -61,11 +60,12 @@ class Funcs():
         self.lbl_fim = Label(self.filtro, text = 'Data final', font = ('verdana', 8, 'bold'))
         self.lbl_fim.place(relx = 0.60, rely = 0.42)
         self.ent_fim = DateEntry(self.filtro, locale='pt_br')
-        self.data_fim = self.ent_fim.get()
         self.ent_fim.delete(0,END)
-        self.ent_fim.place(relx=0.60, rely=0.45)        
+        self.ent_fim.place(relx=0.60, rely=0.45) 
 
     def seleciona_revenda(self):
+        self.data_ini = self.ent_ini.get()
+        self.data_fim = self.ent_fim.get()
         try:
             self.listbox_res.destroy()
             self.scroll_res.destroy()
@@ -73,7 +73,6 @@ class Funcs():
             self.scroll_val.destroy()
         except:
             pass    
-        self.cria_listbox()
         empresa = []
         revenda = []
         combo_p1 = []
@@ -87,7 +86,7 @@ class Funcs():
         self.revenda = ', '.join(revenda)
         self.combo_p = ', '.join(combo_p1)
         self.cnpj = ', '.join(cnpj)
-        self.leitura_banco()   #### Validacao.py
+        self.limpa_tab()   #### Prepara_dados.py
         
     def frame_revenda(self):
         self.lbl_titulop = Label(self.filtro, text = 'Extrator de dados para comissão', font=('verdana', 18, 'bold'))
@@ -105,6 +104,6 @@ class Funcs():
             self.listbox.insert(a, self.combo)
        
         btn_validar = Button(self.filtro, text='BUSCAR', font=('verdana', 13, 'bold'), bg = '#D3D3D3', height = 3, 
-          width = 10)#, command=self.seleciona_revenda)
+          width = 10, command=self.seleciona_revenda)
         btn_validar.place(relx=0.40, rely=0.85)
         self.desconecta_DB()

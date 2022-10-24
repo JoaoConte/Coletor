@@ -4,9 +4,9 @@ class Pre_Dados():
 
     def limpa_tab(self):
         self.conecta_col()
+        self.cursor_col.execute('DELETE FROM itens_s')
+        self.cursor_col.execute('DELETE FROM itens_p')
         self.cursor_col.execute('DELETE FROM notas')
-        self.cursor_col.execute('DELETE FROM pecas')
-        self.cursor_col.execute('DELETE FROM servicos')
         self.banco_col.commit()
         self.desconecta_col()
 ############################# Le e grava CAPA de notas
@@ -48,7 +48,7 @@ class Pre_Dados():
             desconto = float(linha[10])
             liquido = float(linha[11])
             data = datetime.date(linha[12])
-            self.cursor_col.execute("INSERT INTO pecas(EMPRESA, REVENDA, NUMERO_NOTA_FISCAL, SERIE_NOTA_FISCAL, ITEM_ESTOQUE_PUB, DES_ITEM_ESTOQUE, QUANTIDADE, VAL_UNITARIO, VAL_CUSTO_MEDIO, VAL_DEVERIA, VAL_DESCONTO, TOTAL_LIQUIDO, DTA_ENTRADA_SAIDA) VALUES(? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?, ?)", (empresa,revenda,nota,serie,item_pub,des_item,quantidade,unitario,customedio,deveria,desconto,liquido,data))
+            self.cursor_col.execute("INSERT INTO itens_p(EMPRESA, REVENDA, NUMERO_NOTA_FISCAL, SERIE_NOTA_FISCAL, ITEM_ESTOQUE_PUB, DES_ITEM_ESTOQUE, QUANTIDADE, VAL_UNITARIO, VAL_CUSTO_MEDIO, VAL_DEVERIA, VAL_DESCONTO, TOTAL_LIQUIDO, DTA_ENTRADA_SAIDA) VALUES(? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?, ?)", (empresa,revenda,nota,serie,item_pub,des_item,quantidade,unitario,customedio,deveria,desconto,liquido,data))
         self.banco_col.commit()
 
 ############################# Le e grava SERVICOS das notas
@@ -69,7 +69,7 @@ class Pre_Dados():
             desconto = float(linha[9])
             liquido = float(linha[10])
             data = datetime.date(linha[11])
-            self.cursor_col.execute("INSERT INTO servicos(EMPRESA, REVENDA, NUMERO_NOTA_FISCAL, SERIE_NOTA_FISCAL, SERVICO, DESCRICAO, MAODEOBRA, QUANTIDADE, VAL_UNITARIO, VAL_DESCONTO, TOTAL_LIQUIDO, DTA_ENTRADA_SAIDA) VALUES(? ,? ,? ,? ,? ,? ,?, ? ,? ,? ,? , ?)", (empresa,revenda,nota,serie,servico,descricao,maodeobra,quantidade,unitario,desconto,liquido,data))
+            self.cursor_col.execute("INSERT INTO ITENS_s(EMPRESA, REVENDA, NUMERO_NOTA_FISCAL, SERIE_NOTA_FISCAL, SERVICO, DESCRICAO, MAODEOBRA, QUANTIDADE, VAL_UNITARIO, VAL_DESCONTO, TOTAL_LIQUIDO, DTA_ENTRADA_SAIDA) VALUES(? ,? ,? ,? ,? ,? ,?, ? ,? ,? ,? , ?)", (empresa,revenda,nota,serie,servico,descricao,maodeobra,quantidade,unitario,desconto,liquido,data))
         self.banco_col.commit()
         self.desconecta_DB()
         self.desconecta_col()
@@ -77,15 +77,34 @@ class Pre_Dados():
 ########################################################################################################################
 # Extração dos dados banco temporario para DataFrame e salvar em Excel
 ########################################################################################################################
-#        exporta = sqlite3.connect(r"c:\coletor\Coletor_DB.db") # Abre banco para ser populado
-#        cp = exporta.cursor()
+        self.conecta_col()
 
 # ---------------------- Gera DataFrame venda peças
-#        sql_pecas = ("SELECT n.USUARIO as 'VENDEDOR', n.NOME as 'NOME DO VENDEDOR', p.item_estoque_pub as 'CODIGO ITEM', p.DES_ITEM_ESTOQUE as 'DESCRICAO DO ITEM' , p.QUANTIDADE, sum(p.TOTAL_LIQUIDO) as 'TOTAL LIQUIDO', sum(p.VAL_CUSTO_MEDIO) as 'TOTAL CUSTO MEDIO', ((sum(p.TOTAL_LIQUIDO)/sum(p.VAL_CUSTO_MEDIO))-1)*100 as '% LUCRO', p.VAL_DEVERIA as 'VALOR TABELA' FROM notas n INNER JOIN pecas p ON p.EMPRESA = n.EMPRESA AND p.REVENDA = n.REVENDA AND n.NUMERO_NOTA_FISCAL = p.NUMERO_NOTA_FISCAL AND n.SERIE_NOTA_FISCAL = p.SERIE_NOTA_FISCAL WHERE n.USUARIO in ("+vendedor+") and p.item_estoque_pub in ("+pecas+") GROUP BY n.NOME, p.DES_ITEM_ESTOQUE")
-#        sql_servicos = ("SELECT n.USUARIO AS 'VENDEDOR', n.NOME AS 'NOME DO VENDEDOR', s.MAODEOBRA AS 'CODIGO DO SERVICO', s.DESCRICAO AS 'DESCRICAO DO SERVICO', sum(s.TOTAL_LIQUIDO) AS 'TOTAL LIQUIDO' FROM notas n INNER JOIN servicos s ON s.EMPRESA = n.EMPRESA AND s.REVENDA = n.REVENDA AND s.NUMERO_NOTA_FISCAL = n.NUMERO_NOTA_FISCAL AND s.SERIE_NOTA_FISCAL = n.SERIE_NOTA_FISCAL WHERE n.USUARIO IN ("+vendedor+") AND s.MAODEOBRA  IN ("+servicos+") GROUP BY n.NOME, s.MAODEOBRA")
+        self.vendedor = ''
+        self.peca = ''
+        self.servico = ''
+        self.cursor_col.execute("select cod_usuario from consultores where empresa ="+self.empresa+" and revenda = "+self.revenda)
+        for vend in self.cursor_col.fetchall():
+            self.vendedor = self.vendedor + "'"+vend[0]+"',"
+            self.vendedores = self.vendedor[:-1]
+        self.cursor_col.execute("select cod_item from pecas where empresa ="+self.empresa+" and revenda = "+self.revenda)
+        for pec in self.cursor_col.fetchall():
+            self.peca = self.peca + "'"+pec[0]+"',"
+            self.pecas = self.peca[:-1]
+        self.cursor_col.execute("select cod_servico from servicos where empresa ="+self.empresa+" and revenda = "+self.revenda)
+        for serv in self.cursor_col.fetchall():
+            self.servico = self.servico + "'"+serv[0]+"',"
+            self.servicos = self.servico[:-1]
+        self.conecta_col()    
 
-#        df_venda_pecas = pd.read_sql(sql_pecas, exporta) 
-#        df_venda_servicos = pd.read_sql(sql_servicos, exporta) 
+        sql_pecas = ("SELECT n.USUARIO as 'VENDEDOR', n.NOME as 'NOME DO VENDEDOR', p.item_estoque_pub as 'CODIGO ITEM', p.DES_ITEM_ESTOQUE as 'DESCRICAO DO ITEM' , p.QUANTIDADE, sum(p.TOTAL_LIQUIDO) as 'TOTAL LIQUIDO', sum(p.VAL_CUSTO_MEDIO) as 'TOTAL CUSTO MEDIO', ((sum(p.TOTAL_LIQUIDO)/sum(p.VAL_CUSTO_MEDIO))-1)*100 as '% LUCRO', p.VAL_DEVERIA as 'VALOR TABELA' FROM notas n INNER JOIN itens_p p ON p.EMPRESA = n.EMPRESA AND p.REVENDA = n.REVENDA AND n.NUMERO_NOTA_FISCAL = p.NUMERO_NOTA_FISCAL AND n.SERIE_NOTA_FISCAL = p.SERIE_NOTA_FISCAL WHERE n.USUARIO in ("+self.vendedores+") and p.item_estoque_pub in ("+self.pecas+") GROUP BY n.NOME, p.DES_ITEM_ESTOQUE")
+        sql_servicos = ("SELECT n.USUARIO AS 'VENDEDOR', n.NOME AS 'NOME DO VENDEDOR', s.MAODEOBRA AS 'CODIGO DO SERVICO', s.DESCRICAO AS 'DESCRICAO DO SERVICO', sum(s.TOTAL_LIQUIDO) AS 'TOTAL LIQUIDO' FROM notas n INNER JOIN itens_s s ON s.EMPRESA = n.EMPRESA AND s.REVENDA = n.REVENDA AND s.NUMERO_NOTA_FISCAL = n.NUMERO_NOTA_FISCAL AND s.SERIE_NOTA_FISCAL = n.SERIE_NOTA_FISCAL WHERE n.USUARIO IN ("+self.vendedores+") AND s.MAODEOBRA  IN ("+self.servicos+") GROUP BY n.NOME, s.MAODEOBRA")
 
-#        nome_planilha = 'Mov_'+ xempresa + '_'+ xrevenda+'_'+salvar
-#        df_venda_pecas.to_excel(nome_planilha, index = False)
+        df_venda_pecas = pd.read_sql(sql_pecas, self.banco_col) 
+        df_venda_servicos = pd.read_sql(sql_servicos, self.banco_col) 
+
+        nome_planilha = 'Mov_'+ self.empresa + '_'+ self.revenda+'_ Peças'
+        df_venda_pecas.to_excel(nome_planilha, index = False)
+
+        nome_planilha = 'Mov_'+ self.empresa + '_'+ self.revenda+'_ Serviços'
+        df_venda_servicos.to_excel(nome_planilha, index = False)

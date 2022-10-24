@@ -18,25 +18,20 @@ class Conexao():
                             self.banco1 = self.leitura[self.posp + 1:]
                             self.banco = self.banco1.strip("\n")
                         elif self.bancodados == 'ORACLE':
-                            #self.ler_valida()
                             with open(self.caminho + '\conexao_par.dat', 'r') as con_valida:
                                 for self.le_valida in con_valida:
                                     if self.le_valida[0:9] == '[USUARIO]':
                                         self.usu_conex1 = self.le_valida[10:]
                                         self.usuario = self.usu_conex1.strip("\n")
-                                        #print(self.usuario)
                                     if self.le_valida[0:7] == '[SENHA]':
                                         self.sen_conex1 = self.le_valida[8:]
                                         self.senha = self.sen_conex1.strip('\n')
-                                        #print(self.senha)
                                     if self.le_valida[0:6] == '[HOST]':
                                         self.host_conex1 = self.le_valida[7:]
                                         self.host = self.host_conex1.strip('\n')
-                                        #print(self.host)
                                     if self.le_valida[0:14] == '[SERVICE_NAME]':
                                         self.serv_conex1 = self.le_valida[15:]
                                         self.service = self.serv_conex1.strip('\n')
-                                        #print(self.service)
         except OSError:
             messagebox.showerror('Falha na conexão com o Banco de dados', 'arquivo CONEXÃO.DAT não encontrado!\n'
                                                                           'Verifique se o programa executável está na\n'
